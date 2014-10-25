@@ -7,10 +7,16 @@
 	App.Views = {};
 	App.Collections = {};
 
+////////////////Models///////
+////////////////////////////
+	
+	App.Models.Photo = Parse.Object.extend('Photo');
+
 ////////////////Routers///////
 /////////////////////////////
 	App.Router = Parse.Router.extend ({
 		initialize: function (){
+
 		},
 
 		routes: {
@@ -18,7 +24,8 @@
 			'login':'logIn',
 			'create': 'create',
 			'logout': 'logout',
-			'newPost': 'newPost'
+			'newPost': 'newPost',
+			'yourPhotos' : 'yourPhotos'
 		},
 
 		logIn: function (){
@@ -39,13 +46,19 @@
 		newPost: function (){
 			$('.main-section').empty();
 			new App.Views.NewPostView();
+		},
+
+		yourPhotos: function (){	
+			$('.main-section').empty();			
+			var query = new Parse.Query(App.Models.Photo);
+			var collection = query.collection();
+			collection.fetch();
+			new App.Views.YourPhotosView({
+				collection: collection,
+				// el: '.main-section'
+			});	
 		}
 	});
-
-////////////////Models///////
-////////////////////////////
-
-	App.Models.Photo = Parse.Object.extend('Photo');
 
 ////////////////Views////////	
 ////////////////////////////
@@ -121,14 +134,13 @@
 
 	App.Views.LogoutView = Parse.View.extend ({
 
-
 		initialize: function (){
-			console.log('initialize');
+			Parse.User.logOut();
 			this.render();
 		},
 
 		render: function (){
-			console.log('render');
+			alert('thanks for logging out');
 		}
 	});
 
@@ -138,37 +150,39 @@
 		template: _.template($('#templates-new-post').text()),
 
 		events: {
-			'click .logout': 'logout',
-			'change input[type=file]': 'uploadImage',
 			'click .button': 'save'
 		},
 
-		uploadImage: function (e){
-			console.log('uploadImage starts');
+		save: function(e){
 			var self = this;
 			e.preventDefault();
 			var $uploadFile = $('.upload-image')[0];
 			if ($uploadFile.files.length > 0){
 				var file = $uploadFile.files[0];
-				console.log(file);
 			 	var parseFile = new Parse.File(file.name, file);
 
 			 	parseFile.save().then(function(){
 					self.model.set('image', parseFile.url());
+					self.model.set ({
+						photographer: Parse.User.current()
+					});
+					self.model.save(null, {
+				 		success: function (parseFile){
+				 			App.Route.navigate('yourPhotos', {trigger:true});
+			 			},
+				 		error: function (parseFile, error){
+				 			console.log('error starts');
+				 			alert('failed: '+error.message);
+				 			console.log('error finishes');
+				 		}
+			 		});
 			 	});
 			}
-			console.log('uploadImage finishes');
-		},
-
-		save: function(){
-			this.model.save();
 		},
 
 		initialize: function (){
 			console.log('initialize starts');			
 			this.model = new App.Models.Photo();
-			// _.bindAll(this, 'render');
-			// this.model.on('click', this.render);
 			$('.main-section').append(this.el);
 			this.render();
 			console.log('Initialize finishes');
@@ -180,16 +194,62 @@
 			console.log('render finishes');
 		},
 
-		logout: function (e){
-			e.preventDefault();
-			console.log('test');
-			Parse.User.logOut();
-			var currentUser = Parse.User.current();
-			console.log(currentUser);
-		},
+		// logout: function (e){
+		// 	e.preventDefault();
+		// 	console.log('test');
+		// 	var currentUser = Parse.User.current();
+		// 	console.log(currentUser);
+		// },
 
 	});
 
+	App.Views.YourPhotosView = Parse.View.extend ({
+		tagName: 'ul',
+		className: 'your-images',
+
+		initialize: function (){
+			console.log('your photos initialize start');
+			$('.main-section').append(this.el);
+			this.render();
+			this.collection.on('reset', this.render, this);
+			console.log('your photos initialize finish');
+		},
+
+		render: function (){
+			console.log('your photos render start');
+			// this.$el.empty();
+			this.collection.each(this.renderChildren, this);			
+			console.log('your photos render finish');
+		},
+
+		renderChildren: function (photo){
+			console.log('your photos renderchild start');
+			new App.Views.YourView ({
+				model:photo
+			});
+			console.log('your photos renderchild finish');
+		}
+	});
+
+	App.Views.YourView = Parse.View.extend ({
+		tagName: 'li',
+		className: 'image',
+		template: _.template($('#templates-your-photos').text()),
+
+		initialize: function (){
+			console.log('your view initialize start');
+			$('.your-images').append(this.el);
+			this.render();
+			console.log('your view intiialize finishes');
+		},
+
+		render: function (){
+			console.log('your view render start');
+			console.log(this.model.toJSON());
+			this.$el.append(this.template({photo: this.model.toJSON()}));
+			console.log('your view render finishes');
+		}
+	})
 
 ////////////////Glue Code/////	
 /////////////////////////////
