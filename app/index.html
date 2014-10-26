@@ -19,13 +19,14 @@
         <!-- build:js scripts/vendor/modernizr.js -->
         <script src="bower_components/modernizr/modernizr.js"></script>
         <!-- endbuild -->
+
     </head>
-    <body>
+    <body class='background'>
         <header class='header'>
+            <img class='logo' src = '../images/logo.png'/>
             <ul class='menu'>
-                <li class='menu-item'><a href='#login'>Login</a></li>
-                <li class='menu-item'><a href='#newPost'>Post An Image</a></li>           
-                <li class='menu-item'><a href='#yourPhotos'>Look @ My Pictures</a></li>         
+                <li class='menu-item'><a href='#newPost'>Post An Pic</a></li>           
+                <li class='menu-item'><a href='#yourPhotos'>My Pics</a></li>         
                 <li class='menu-item'><a href='#logout' class='logout'>Logout</a></li>
 <!--                 <li class='menu-item'><a href='#others' class='logout'>others</a></li>
  -->
@@ -56,6 +57,9 @@
 
         <!-- Parse -->
         <script src="//www.parsecdn.com/js/parse-1.3.1.min.js"></script>
+
+
+        
 
         <!-- Templates -->
         <script type=text/template id='templates-create-account'>
