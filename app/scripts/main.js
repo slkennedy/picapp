@@ -12,6 +12,13 @@
 	
 	App.Models.Photo = Parse.Object.extend('Photo');
 
+// ////////////////Collections///
+// /////////////////////////////
+
+// 	App.Collections.Photos = Parse.Collection.extend ({
+// 		model: App.Models.Photo
+// 	});
+
 ////////////////Routers///////
 /////////////////////////////
 	App.Router = Parse.Router.extend ({
@@ -32,6 +39,7 @@
 			'logout': 'logout',
 			'newPost': 'newPost',
 			'yourPhotos' : 'yourPhotos',
+			'allPics' : 'allPics'
 			// 'others' : 'othersPhotos'
 		},
 
@@ -63,6 +71,7 @@
 			collection.fetch();
 			new App.Views.YourPhotosView({
 				collection: collection,
+				model: App.Models.Photo
 				// el: '.main-section'
 			});	
 		},
@@ -79,6 +88,17 @@
 		// 		collection:collection
 		// 	});
 		// }
+
+		allPics: function (){
+			$('.main-section').empty();
+			var query = new Parse.Query(App.Models.Photo);
+			query.exists('image');
+			var collection = query.collection();
+			collection.fetch();
+			new App.Views.allPicsView({
+				collection: collection
+			});
+		}
 	});
 
 ////////////////Views////////	
@@ -328,7 +348,23 @@
 	// 		console.log('othersview render ends');
 	// 	}
 	// });
+	
+	App.Views.allPicsView = Parse.View.extend ({
+		template: _.template($('#templates-all-pics').text()),
 
+		initialize: function (){
+			console.log(this.collection);
+			console.log(this);
+			console.log(this.model);
+			console.log(JSON.stringify(this.collection));
+			// $('.main-section').append(this.el);
+			this.render();
+		},
+
+		render: function (){
+			this.$el.append(this.template);
+		}
+	});
 
 ////////////////Glue Code/////	
 /////////////////////////////

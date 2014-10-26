@@ -2,7 +2,7 @@
 <html class="no-js">
     <head>
         <meta charset="utf-8">
-        <title>picapp</title>
+        <title>PicApp</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -23,8 +23,9 @@
     </head>
     <body class='background'>
         <header class='header'>
-            <img class='logo' src = '../images/logo.png'/>
+            <a href='#yourPhotos'><img class='logo' src = '../images/logo.png'/></a>
             <ul class='menu'>
+                <li class='menu-item'><a href='#allPics'>All Pics</a></li>                       
                 <li class='menu-item'><a href='#newPost'>Post An Pic</a></li>           
                 <li class='menu-item'><a href='#yourPhotos'>My Pics</a></li>         
                 <li class='menu-item'><a href='#logout' class='logout'>Logout</a></li>
@@ -97,6 +98,15 @@
         <script type='text/template' id='templates-subheader'>
             <img class='photo' src='<%= photo.image %>'>
         </script> -->
+
+        <script type='text/template' id='templates-all-pics'>
+            <ul>
+                <% _.each(App.Models.Photo, function(photo) { %>
+                    <li>
+                        <img class='photo' src='<%= image %>'>
+                    </li>
+                <% }); %>
+        </script>
         <!-- End Templates -->
 
         <!-- build:js scripts/plugins.js -->

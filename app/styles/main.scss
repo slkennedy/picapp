@@ -21,7 +21,7 @@ html {
 }
 
 body {
-    background: linear-gradient(RGBA(238, 237, 233, 0.50), RGBA(238, 237, 233, 0.50)), url('../images/pattern.png');
+    background: linear-gradient(RGBA(39, 43, 52, 0.10), RGBA(39, 43, 52, 0.10)), url('../images/pattern.png');
     font-size: 100%;
     width: 100%;
 }
@@ -57,7 +57,6 @@ body {
 
     li {
         display:inline-block;
-        // border-right: solid 2px $light-tan;
         padding: 0 10px;
     }
 
@@ -85,33 +84,13 @@ form {
         padding: 5px;
         margin: 15px auto;
         display: block;
-        // background: $medium-blue;
     }
-
-    // ::-webkit-input-placeholder {
-    //     // color: $dark-blue;
-    // }
-
-    // :-moz-placeholder {
-    //     color: $dark-blue;
-    // }
-
-    // ::-moz-placeholder {
-    //     color: $dark-blue;
-    // }
-
-    // :-ms-input-placeholder {
-    //     color: $dark-blue;
-    // }
 
     .button {
         background: $dark;
         color: $light;
         padding: 2px 5px;
         border: 1px solid $dark;
-        // -moz-box-shadow: 1px 1px 3px 1px $medium;
-        // -webkit-box-shadow: 1px 1px 3px 1px $medium;
-        // box-shadow: 1px 1px 3px 1px $medium;
     }
 
     .heading-text {
@@ -128,17 +107,11 @@ form {
         font-size: 1.75em;
         margin: 0 auto;
         margin-top: 40px;
-        // background: $dark-blue;
         @include border-radius(5px);
-        // border: 1px solid $medium-green;
-        // -moz-box-shadow: 1px 1px 1px 1px $medium-tan;
-        // -webkit-box-shadow: 1px 1px 1px 1px $medium-tan;
-        // box-shadow: 1px 1px 1px 1px $medium-tan;
+        
         a {
             color: $accent;
-
         }
-
     }
 }
 
@@ -149,10 +122,6 @@ form {
     padding: 0;
     text-align: center;
 
-    .heading-text {
-        text-align: center;
-    }
-
     li {
         display: inline-block;
         margin: 20px 10px;
@@ -161,36 +130,140 @@ form {
             height: 400px;
             border: 10px white solid;
             border-bottom: 30px white solid;
-            // -moz-box-shadow: 1px 1px 1px 1px $medium-tan;
-            // -webkit-box-shadow: 1px 1px 1px 1px $medium-tan;
-            // box-shadow: 1px 1px 1px 1px $medium-tan;
         }
     }
 }
 
+//portrait
+@media only screen 
+and (max-width : 320px) {
+    .header {
+        height: 100px;
+        font-size: 1.3em;
 
+        .logo {
+            width: 100%;
+            display: inline-block;
+            margin: auto 0;
+            position: relative;
+        }
 
-// /* Responsive: Portrait tablets and up */
-// @media screen and (min-width: 768px) {
-//     .container {
-//         max-width: 730px;
-//     }
+        ul {
+            display: block;
+            width: 100%;
+            position: relative;
+            margin: 0 auto;
+        }
+    }
 
-//     /* Remove the padding we set earlier */
-//     .header,
-//     .marketing,
-//     .footer {
-//         padding-left: 0;
-//         padding-right: 0;
-//     }
+    form {
+        width: 80%;
 
-//     /* Space out the masthead */
-//     .header {
-//         margin-bottom: 30px;
-//     }
+        .input,
+        .button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none; 
+            font-size: 1.8em;
+        }
 
-//     /* Remove the bottom border on the jumbotron for visual effect */
-//     .jumbotron {
-//         border-bottom: 0;
-//     }
-// }
+        .button {
+            padding: 5px 12px;
+            border: 1px solid $dark;
+        }
+
+        .heading-text {
+            text-align: center;
+            font-size: 3em;
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+
+        .create-account {
+            padding: 0;
+            text-align: center;
+            width: 100%;
+            font-size: 1.75em;
+            margin: 0 auto;
+            margin-top: 40px;
+            
+
+        }
+    }
+
+    .your-images {
+        overflow: hidden;
+
+            li {
+                white-space: nowrap;
+
+                .photo {
+                    max-width: 90%;
+                    min-width: 50%;
+                    border: 10px white solid;
+                    border-bottom: 30px white solid;
+                }
+            }
+        // }
+    }
+}
+
+// landscape
+@media only screen 
+and (min-width : 321px)
+and (max-width : 725px) {
+    .header {
+        height: 150px;
+        font-size: 1.5em;
+        
+        .logo {
+            width: 75%;
+            display: block;
+            margin: 0 auto;
+            position: relative;
+            // text-align: center;
+        }
+
+        ul {
+            display: block;
+            width: 100%;
+            position: relative;
+            margin: 0 auto;
+        }
+    }
+
+    form {
+        width: 80%;
+
+        .input,
+        .button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none; 
+            font-size: 2em;
+            width: 70%;
+        }
+
+        .button {
+            padding: 5px 12px;
+            border: 1px solid $dark;
+            width: 30%;
+        }
+
+        .heading-text {
+            text-align: center;
+            font-size: 3em;
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+
+        .create-account {
+            padding: 0;
+            text-align: center;
+            width: 100%;
+            font-size: 2em;
+            margin: 0 auto;
+            margin-top: 40px;
+        }
+    }
+}
