@@ -16,7 +16,13 @@
 /////////////////////////////
 	App.Router = Parse.Router.extend ({
 		initialize: function (){
+			this.render();
+		},
 
+		render: function (){
+			// new App.Views.SubheaderView({
+			// 	model: App.Models.Users
+			// });
 		},
 
 		routes: {
@@ -25,7 +31,8 @@
 			'create': 'create',
 			'logout': 'logout',
 			'newPost': 'newPost',
-			'yourPhotos' : 'yourPhotos'
+			'yourPhotos' : 'yourPhotos',
+			// 'others' : 'othersPhotos'
 		},
 
 		logIn: function (){
@@ -51,13 +58,27 @@
 		yourPhotos: function (){	
 			$('.main-section').empty();			
 			var query = new Parse.Query(App.Models.Photo);
+			query.equalTo('photographer', Parse.User.current());
 			var collection = query.collection();
 			collection.fetch();
 			new App.Views.YourPhotosView({
 				collection: collection,
 				// el: '.main-section'
 			});	
-		}
+		},
+
+		// othersPhotos: function (){
+		// 	// var userQuery = new Parse.Query(App.Models.User);
+		// 	// userQuery.equalTo('objectId', App.Photo.photographer);
+		// 	console.log('hey');
+		// 	var photoQuery = new Parse.Query(App.Models.Photo);
+		// 	photoQuery.equalTo('photographer', );
+		// 	var collection = photoQuery.collection();
+		// 	collection.fetch();
+		// 	new App.Views.OthersPhotosView ({
+		// 		collection:collection
+		// 	});
+		// }
 	});
 
 ////////////////Views////////	
@@ -80,8 +101,18 @@
 			user.set ('password', $('.password').val());
 			user.signUp(null, {
 				success: function (user){
-					// App.navigate('login', {trigger: true});
-					console.log('user created!');
+					Parse.User.logIn(
+						$('.username').val(),
+						$('.password').val(), {
+							success: function(){
+								App.Route.navigate('yourPhotos', {trigger: true});
+								console.log('user created!');
+							},
+							error: function (){
+								App.Route.navigate('login', {trigger: true});
+							}
+						}
+					)
 				},
 				error: function (){
 					alert('error: '+error.code+' '+error.message);
@@ -105,7 +136,8 @@
 		template: _.template($('#templates-login').text()),
 
 		events: {
-			'click .button': 'login'
+			'click .button': 'login',
+			// 'click .resetPassword' : 'resetPassword'
 		},
 
 		login: function (e){
@@ -114,13 +146,24 @@
 				$('.username').val(),
 				$('.password').val(), {
 					success: function (user){
-						App.Route.navigate('newPost', {trigger:true});
+						App.Route.navigate('yourPhotos', {trigger:true});
 					}, 
 					error: function (user, error){
 						console.log(error);
 					}
 				});
 		},
+
+		// resetPassword: function (){
+		// 	Parse.User.requestPasswordReset('email', {
+		// 		success: function (){
+		// 			alert('You have been emailed a link to reset your password');
+		// 		},
+		// 		error: function (error){
+		// 			alert("Error: "+ error.message);
+		// 		}
+		// 	});
+		// },
 		
 		initialize: function (){
 			$('.main-section').append(this.el);
@@ -140,7 +183,7 @@
 		},
 
 		render: function (){
-			alert('thanks for logging out');
+			App.Route.navigate('login', {trigger:true});
 		}
 	});
 
@@ -164,16 +207,15 @@
 			 	parseFile.save().then(function(){
 					self.model.set('image', parseFile.url());
 					self.model.set ({
-						photographer: Parse.User.current()
+						photographer: Parse.User.current(),
 					});
+
 					self.model.save(null, {
 				 		success: function (parseFile){
 				 			App.Route.navigate('yourPhotos', {trigger:true});
 			 			},
 				 		error: function (parseFile, error){
-				 			console.log('error starts');
 				 			alert('failed: '+error.message);
-				 			console.log('error finishes');
 				 		}
 			 		});
 			 	});
@@ -181,17 +223,13 @@
 		},
 
 		initialize: function (){
-			console.log('initialize starts');			
 			this.model = new App.Models.Photo();
 			$('.main-section').append(this.el);
 			this.render();
-			console.log('Initialize finishes');
 		},
 
 		render: function (){
-			console.log('render starts');			
 			this.$el.append(this.template);
-			console.log('render finishes');
 		},
 
 		// logout: function (e){
@@ -206,28 +244,23 @@
 	App.Views.YourPhotosView = Parse.View.extend ({
 		tagName: 'ul',
 		className: 'your-images',
+		template: _.template($('#templates-your-photo-header').text()),
 
 		initialize: function (){
-			console.log('your photos initialize start');
 			$('.main-section').append(this.el);
 			this.render();
 			this.collection.on('reset', this.render, this);
-			console.log('your photos initialize finish');
 		},
 
 		render: function (){
-			console.log('your photos render start');
-			// this.$el.empty();
-			this.collection.each(this.renderChildren, this);			
-			console.log('your photos render finish');
+			this.$el.prepend(this.template);	
+			this.collection.each(this.renderChildren, this);		
 		},
 
 		renderChildren: function (photo){
-			console.log('your photos renderchild start');
 			new App.Views.YourView ({
 				model:photo
 			});
-			console.log('your photos renderchild finish');
 		}
 	});
 
@@ -237,19 +270,65 @@
 		template: _.template($('#templates-your-photos').text()),
 
 		initialize: function (){
-			console.log('your view initialize start');
 			$('.your-images').append(this.el);
 			this.render();
-			console.log('your view intiialize finishes');
 		},
 
 		render: function (){
-			console.log('your view render start');
-			console.log(this.model.toJSON());
 			this.$el.append(this.template({photo: this.model.toJSON()}));
-			console.log('your view render finishes');
 		}
-	})
+	});
+
+	// App.Views.OthersPhotosView = Parse.View.extend ({
+	// 	tagName: 'ul',
+	// 	className: 'your-images',
+	// 	template: _.template($('#templates-your-photo-header').text()),
+
+	// 	initialize: function (){
+	// 		console.log('othersphotosview initialize starts');
+	// 		$('.main-section').append(this.el);
+	// 		this.render();
+	// 		this.collection.on('reset', this.render, this);
+	// 		console.log('othersphotosview initialize ends');
+	// 	},
+
+	// 	render: function (){
+	// 		console.log('othersphotosview render starts');
+	// 		this.$el.prepend(this.template);	
+	// 		this.collection.each(this.renderChildren, this);	
+	// 		console.log('othersphotosview render ends');
+	// 	},
+
+	// 	renderChildren: function (photo){
+	// 		console.log('othersphotosview renderChildren starts');
+	// 		new App.Views.OthersView ({
+	// 			model:photo
+	// 		});
+	// 		console.log('othersphotosview renderChildren ends');
+	// 	}
+	// });
+
+	// App.Views.OthersView = Parse.View.extend ({
+	// 	tagName: 'li',
+	// 	className: 'image',
+	// 	template: _.template($('#templates-your-photos').text()),
+
+	// 	initialize: function (){
+	// 		console.log('othersview initialize starts');
+	// 		console.log(this.model);
+	// 		$('.your-images').append(this.el);
+	// 		this.render();
+	// 		console.log('othersview initialize ends');
+	// 	},
+
+	// 	render: function (){
+	// 		console.log('othersview render starts');
+	// 		console.log(this.model);
+	// 		this.$el.append(this.template({photo: this.model.toJSON()}));
+	// 		console.log('othersview render ends');
+	// 	}
+	// });
+
 
 ////////////////Glue Code/////	
 /////////////////////////////

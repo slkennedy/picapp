@@ -24,21 +24,24 @@
         <header class='header'>
             <ul class='menu'>
                 <li class='menu-item'><a href='#login'>Login</a></li>
-                <li class='menu-item'><a href='#create'>Create Account</a></li>
+                <li class='menu-item'><a href='#newPost'>Post An Image</a></li>           
+                <li class='menu-item'><a href='#yourPhotos'>Look @ My Pictures</a></li>         
                 <li class='menu-item'><a href='#logout' class='logout'>Logout</a></li>
-                <li class='menu-item'><a href='#newPost'>Post An Image</a></li>            
-                <li class='menu-item'><a href='#yourPhotos'>Look @ My Pictures</a></li>            
+<!--                 <li class='menu-item'><a href='#others' class='logout'>others</a></li>
+ -->
             </ul>
         </header>
+
+        <section class='subheader'></section>
 
         <section class='main-section'></section>
 
         <footer class='footer'>
-            <li class='menu-item'><a href='#login'>Login</a></li>
+            <!-- <li class='menu-item'><a href='#login'>Login</a></li>
             <li class='menu-item'><a href='#create'>Create Account</a></li>
             <li class='menu-item'><a href='#logout' class='logout'>Logout</a></li>
             <li class='menu-item'><a href='#newPost'>Post An Image</a></li>            
-            <li class='menu-item'><a href='#yourPhotos'>Look @ My Pictures</a></li>  
+            <li class='menu-item'><a href='#yourPhotos'>Look @ My Pictures</a></li>   -->
         </footer>
 
       
@@ -68,26 +71,29 @@
             <input class='input username' type='username' placeholder='Username'>
             <input class='input password' type='password' placeholder='Password'>
             <button class='button'>Login</button>
+            <!-- //<button class='resetPassword'>Forgot Password</button> -->
+            <li class='create-account'><a href='#create'>Create Account</a></li>
+
         </script>
 
-        <script type=text/tempate id='templates-new-post'>     
+        <script type=text/template id='templates-new-post'>     
             <h1 class='heading-text'>Upload A Photo</h1>
             <input type='file' class='input upload-image'>
             <button class='button'>Submit</button>
         </script>
         
-        <script type=text/tempate id='templates-your-photos'>
-            <h1 class='heading-text'>Your Photos</h1>
-            <img class='large-photo thumbnail' src='<%= photo.image %>'>
+        <script type=text/template id='templates-your-photo-header'>
+            <!-- // <h1 class='heading-text'>Photos</h1>>
+        </script>        
+
+        <script type=text/template id='templates-your-photos'>
+            <img class='photo' src='<%= photo.image %>'>
         </script>
+<!-- 
+        <script type='text/template' id='templates-subheader'>
+            <img class='photo' src='<%= photo.image %>'>
+        </script> -->
         <!-- End Templates -->
-
-
-
-
-
-
-
 
         <!-- build:js scripts/plugins.js -->
         <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/affix.js"></script>
