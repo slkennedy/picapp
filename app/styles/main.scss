@@ -192,13 +192,12 @@ and (max-width : 320px) {
     }
 
     .your-images {
-        overflow: hidden;
 
             li {
-                white-space: nowrap;
+                width: 90%
 
                 .photo {
-                    max-width: 90%;
+                    max-width: 100%;
                     min-width: 50%;
                     border: 10px white solid;
                     border-bottom: 30px white solid;
