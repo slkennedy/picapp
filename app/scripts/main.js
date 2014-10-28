@@ -96,6 +96,7 @@
 			var collection = query.collection();
 			collection.fetch();
 			new App.Views.allPicsView({
+				model: App.photo.model,
 				collection: collection
 			});
 		}

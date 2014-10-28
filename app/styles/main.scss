@@ -193,24 +193,23 @@ and (max-width : 320px) {
 
     .your-images {
 
-            li {
-                width: 90%
+        li {
+            width: 90%;
 
-                .photo {
-                    max-width: 100%;
-                    min-width: 50%;
-                    border: 10px white solid;
-                    border-bottom: 30px white solid;
-                }
+            .photo {
+                max-width: 100%;
+                min-width: 50%;
+                border: 10px white solid;
+                border-bottom: 30px white solid;
             }
-        // }
+        }
     }
 }
 
 // landscape
 @media only screen 
 and (min-width : 321px)
-and (max-width : 725px) {
+and (max-width : 322px) {
     .header {
         height: 150px;
         font-size: 1.5em;
