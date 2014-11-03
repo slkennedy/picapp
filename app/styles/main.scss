@@ -116,7 +116,8 @@ form {
 }
 
 
-.your-images {
+.your-images,
+.all-pics {
     display: block;
     list-style: none;
     padding: 0;
@@ -191,7 +192,8 @@ and (max-width : 320px) {
         }
     }
 
-    .your-images {
+    .your-images,
+    .all-pics {
 
         li {
             width: 90%;

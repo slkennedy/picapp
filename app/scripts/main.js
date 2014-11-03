@@ -39,7 +39,8 @@
 			'logout': 'logout',
 			'newPost': 'newPost',
 			'yourPhotos' : 'yourPhotos',
-			'allPics' : 'allPics'
+			'allPics' : 'allPics',
+			':username' : 'userphotos'
 			// 'others' : 'othersPhotos'
 		},
 
@@ -76,28 +77,27 @@
 			});	
 		},
 
-		// othersPhotos: function (){
-		// 	// var userQuery = new Parse.Query(App.Models.User);
-		// 	// userQuery.equalTo('objectId', App.Photo.photographer);
-		// 	console.log('hey');
-		// 	var photoQuery = new Parse.Query(App.Models.Photo);
-		// 	photoQuery.equalTo('photographer', );
-		// 	var collection = photoQuery.collection();
-		// 	collection.fetch();
-		// 	new App.Views.OthersPhotosView ({
-		// 		collection:collection
-		// 	});
-		// }
+		userphotos: function (){
+			$('.main-section').empty();
+			var userQuery = new Parse.Query('User');
+			userQuery.equalTo('username', username);
+
+			var photoQuery = new Parse.Query('Photo');
+			photoQuery.matchesQuery('photographer', userQ);
+
+			var collection = photoQuery.collection ();
+		},
 
 		allPics: function (){
 			$('.main-section').empty();
 			var query = new Parse.Query(App.Models.Photo);
-			query.exists('image');
 			var collection = query.collection();
-			collection.fetch();
-			new App.Views.allPicsView({
-				model: App.photo.model,
-				collection: collection
+			collection.fetch().then(function (){
+				console.log(collection);
+				new App.Views.allPicsView({
+					model: App.Models.Photos,
+					collection: collection
+				});
 			});
 		}
 	});
@@ -352,18 +352,16 @@
 	
 	App.Views.allPicsView = Parse.View.extend ({
 		template: _.template($('#templates-all-pics').text()),
+		className: 'all-pics',
 
 		initialize: function (){
-			console.log(this.collection);
-			console.log(this);
-			console.log(this.model);
-			console.log(JSON.stringify(this.collection));
-			// $('.main-section').append(this.el);
+			$('.main-section').append(this.el);
 			this.render();
 		},
 
 		render: function (){
-			this.$el.append(this.template);
+			console.log(this.collection.models);
+			this.$el.append(this.template(this.collection));
 		}
 	});
 

@@ -102,9 +102,9 @@
 
         <script type='text/template' id='templates-all-pics'>
             <ul>
-                <% _.each(App.Models.Photo, function(photo) { %>
+                <% _.each(models, function(photo) { %>
                     <li>
-                        <img class='photo' src='<%= image %>'>
+                        <img class='photo' src='<%= photo.attributes.image %>'>
                     </li>
                 <% }); %>
         </script>
