@@ -2,7 +2,8 @@
   "name": "picapp",
   "version": "0.0.0",
   "dependencies": {
-    "gulp": "^3.8.10"
+    "gulp": "^3.8.10",
+    "gulp-prompt": "^0.1.1"
   },
   "devDependencies": {
     "connect": "^2.14.4",
