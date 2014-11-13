@@ -1,0 +1,105 @@
+<!doctype html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <title>PicApp</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="styles/vendor.css">
+
+        <link rel="stylesheet" href="styles/main.css">
+
+        <script src="scripts/vendor/modernizr.js"></script>
+
+    </head>
+    <body class='background'>
+        <header class='header'>
+            <a href='#yourPhotos'><img class='logo' src = '../images/logo.png'/></a>
+            <ul class='menu'>
+                <li class='menu-item'><a href='#allPics'>All Pics</a></li>                       
+                <li class='menu-item'><a href='#newPost'>Post An Pic</a></li>           
+                <li class='menu-item'><a href='#yourPhotos'>My Pics</a></li>         
+                <li class='menu-item'><a href='#logout' class='logout'>Logout</a></li>
+<!--                 <li class='menu-item'><a href='#others' class='logout'>others</a></li>
+ -->
+            </ul>
+        </header>
+
+        <section class='subheader'></section>
+
+        <section class='main-section'></section>
+
+        <footer class='footer'>
+            <!-- <li class='menu-item'><a href='#login'>Login</a></li>
+            <li class='menu-item'><a href='#create'>Create Account</a></li>
+            <li class='menu-item'><a href='#logout' class='logout'>Logout</a></li>
+            <li class='menu-item'><a href='#newPost'>Post An Image</a></li>            
+            <li class='menu-item'><a href='#yourPhotos'>Look @ My Pictures</a></li>   -->
+        </footer>
+
+      
+
+        <script src="scripts/vendor.js"></script>
+
+        <!-- Parse -->
+        <script src="//www.parsecdn.com/js/parse-1.3.1.min.js"></script>
+
+
+        
+
+        <!-- Templates -->
+        <script type=text/template id='templates-create-account'>
+            <h1 class='heading-text'>Create An Account</h1>
+            <input class='input email' type='email' placeholder='Email'>
+            <input class='input username' type='username' placeholder='Username'>
+            <input class='input password' type='password' placeholder='Password'>
+            <button class='button'>Create Account</button>
+        </script>
+
+        <script type=text/template id='templates-login'>
+            <h1 class='heading-text'>Login</h1>
+            <input class='input username' type='username' placeholder='Username'>
+            <input class='input password' type='password' placeholder='Password'>
+            <button class='button'>Login</button>
+            <!-- //<button class='resetPassword'>Forgot Password</button> -->
+            <li class='create-account'><a href='#create'>Create Account</a></li>
+
+        </script>
+
+        <script type=text/template id='templates-new-post'>     
+            <h1 class='heading-text'>Upload A Photo</h1>
+            <input type='file' class='input upload-image'>
+            <button class='button'>Submit</button>
+        </script>
+        
+        <script type=text/template id='templates-your-photo-header'>
+            <!-- // <h1 class='heading-text'>Photos</h1>>
+        </script>        
+
+        <script type=text/template id='templates-your-photos'>
+            <img class='photo' src='<%= photo.image %>'>
+        </script>
+<!-- 
+        <script type='text/template' id='templates-subheader'>
+            <img class='photo' src='<%= photo.image %>'>
+        </script> -->
+
+        <script type='text/template' id='templates-all-pics'>
+            <ul>
+                <% _.each(models, function(photo) { %>
+                    <li>
+                        <img class='photo' src='<%= photo.attributes.image %>'>
+                    </li>
+                <% }); %>
+        </script>
+        <!-- End Templates -->
+
+        <script src="scripts/plugins.js"></script>
+
+        <script src="scripts/main.js"></script>
+
+
+</body>
+</html>
