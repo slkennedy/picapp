@@ -1,10 +1,31 @@
 'use strict';
-// generated on 2014-10-23 using generator-gulp-webapp 0.1.0
+// generated on 2014-10-28 using generator-gulp-webapp 0.1.0
 
 var gulp = require('gulp');
 
 // load plugins
 var $ = require('gulp-load-plugins')();
+var exec = require('child_process').exec;
+var mainBowerFiles = require('main-bower-files');
+
+gulp.task('deploy', function() {
+
+  gulp.src('/')
+    .pipe($.prompt.prompt({
+        type: 'confirm',
+        name: 'task',
+        message: 'This will deploy to GitHub Pages. Have you already built your application and pushed your updated master branch?'
+    }, function(res){
+      if (res.task){
+        console.log('Attempting: "git subtree push --prefix dist origin gh-pages"');
+        exec('git subtree push --prefix dist origin gh-pages', function(err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+        });
+      } else { console.log('Please do this first and then run `gulp deploy` again.'); }
+    }));
+
+});
 
 gulp.task('styles', function () {
     return gulp.src('app/styles/main.scss')
@@ -54,7 +75,7 @@ gulp.task('images', function () {
 });
 
 gulp.task('fonts', function () {
-    return $.bowerFiles()
+    return gulp.src(mainBowerFiles())
         .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
         .pipe($.flatten())
         .pipe(gulp.dest('dist/fonts'))
@@ -67,6 +88,7 @@ gulp.task('extras', function () {
 });
 
 gulp.task('clean', function () {
+    $.cache.clearAll();
     return gulp.src(['.tmp', 'dist'], { read: false }).pipe($.clean());
 });
 
